@@ -4,6 +4,6 @@
 
 ## 分类
 
-- [bolo](bolo博客相关)
+- [bolo博客相关](bolo)
 
 
