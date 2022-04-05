@@ -2,7 +2,7 @@ FROM maven:3-jdk-8-alpine as MVN_BUILD
 
 WORKDIR /opt/bolo/
 ADD . /tmp
-RUN cd /tmp && mvn package -DskipTests -Pci --settings settings.xml && mv target/bolo/* /opt/bolo/ \
+RUN cd /tmp && mvn package -DskipTests --settings settings.xml && mv target/bolo/* /opt/bolo/ \
     && cp -f /tmp/src/main/resources/docker/* /opt/bolo/WEB-INF/classes/
 
 FROM openjdk:8-alpine
