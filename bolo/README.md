@@ -5,8 +5,8 @@
   下面的dockerFiles和 settings.xml放置到博客bolo-solo的下面，执行下面命令编译并导出镜像：
 
   ```sh
-  docker build -t "zeek/bolo" .
-  
+  bash build_docker.sh
+
   docker save -o /tmp/zeek_bolo.tar zeek/bolo
   ```
 - 将`/tmp/zeek_bolo.tar`上传到服务器`/tmp`目录下面，并且导入：
