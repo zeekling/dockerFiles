@@ -15,6 +15,8 @@ inited="/app/inited"
 function init_user() {
 	if [ -f "${inited}" ];then
 		echo "user inited"
+	    kadmin.local -q "xst -k /app/hadoop.keytab -norandkey server/hadoop.${FQDN}"
+	    kadmin.local -q "xst -k /app/cli.keytab -norandkey cli"
 		return;
 	fi
 	echo "begin init user"
@@ -23,11 +25,12 @@ function init_user() {
 	# create admin
 	echo -e "${PASS}\n${PASS}" | kadmin.local -q "addprinc ${ADMIN}/admin"
 	# create hadoop
-	echo -e "${PASS}\n${PASS}" | kadmin.local -q "addprinc hadoop"
-	echo -e "${PASS}\n${PASS}" | kadmin.local -q "addprinc  hadoop/${FQDN}"
-	kadmin.local -q "ktadd -norandkey -k ${KRB5_KTNAME} hadoop"
-	kadmin.local -q "ktadd -norandkey -k ${KRB5_KTNAME} hadoop/${FQDN}"
-	kadmin.local -q "xst -k /app/hadoop.keytab -norandkey hadoop/${FQDN}"
+	echo -e "${PASS}\n${PASS}" | kadmin.local -q "addprinc cli"
+	echo -e "${PASS}\n${PASS}" | kadmin.local -q "addprinc  server/hadoop.${FQDN}"
+	kadmin.local -q "ktadd -norandkey -k ${KRB5_KTNAME} cli"
+	kadmin.local -q "ktadd -norandkey -k ${KRB5_KTNAME} server/hadoop.${FQDN}"
+	kadmin.local -q "xst -k /app/hadoop.keytab -norandkey server/hadoop.${FQDN}"
+	kadmin.local -q "xst -k /app/cli.keytab -norandkey cli"
 	touch "${inited}"
 	echo "user inite success"
 }
