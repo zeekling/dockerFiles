@@ -6,24 +6,28 @@ RUN sed -i s@/archive.ubuntu.com/@/mirrors.aliyun.com/@g /etc/apt/sources.list &
 
 RUN mkdir -p /usr/src/app 
 
-ADD . /usr/src/app 
+# ADD . /usr/src/app 
 
 WORKDIR /usr/src/app 
 
-RUN mv node-v16.16.0-linux-x64 /opt/node-v16.16.0 
+RUN apt update
 
-RUN echo NODE_HOME="/opt/node-v16.16.0" >> ~/.profile && echo PATH=$PATH:$NODE_HOME/bin >> ~/.profile 
+RUN apt install apt-transport-https ca-certificates -y
 
-RUN export NODE_HOME="/opt/node-v16.16.0" && export PATH=$PATH:$NODE_HOME/bin && echo $PATH
+RUN apt-key adv --keyserver pgp.mit.edu --recv D101F7899D41F3C3
 
-RUN whereis node && ls /opt/node-v16.16.0/bin/node
+RUN echo "deb https://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list
 
-RUN  /opt/node-v16.16.0/bin/node -v 
+RUN apt update
 
-RUN /opt/node-v16.16.0/bin/npm -v
+RUN apt install nodejs npm yarn -y
 
-RUN /opt/node-v16.16.0/bin/npm install -g webpack 
-RUN /opt/node-v16.16.0/bin/npm install yarn 
+RUN  node -v 
+
+RUN npm -v
+
+RUN npm install -g webpack 
+RUN npm install yarn 
 
 EXPOSE 4000
 
